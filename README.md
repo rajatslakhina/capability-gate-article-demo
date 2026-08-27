@@ -8,7 +8,7 @@ The library takes a declared tool surface, tracks one bit of session state, and
 answers `allow` / `requireConfirmation` / `deny` as a **pure, total function**.
 No prompt, no classifier, no model in the decision path.
 
-> Article: (added after publish)
+> **Article:** [Your Guardrail Prompt Isn't a Security Control. Here's the One That Is.](https://medium.com/@er.rajatlakhina/your-guardrail-prompt-isnt-a-security-control-here-s-the-one-that-is-bd5c88123e57)
 
 ## The argument, in one screen
 
@@ -85,6 +85,11 @@ Worked example: a 12-tool mail-and-notes assistant surface.
 Two tools decide whether the other four are reachable at all. That is the
 review that matters, and it is a property of the schema — not of the prompt.
 
+The read-plus-send shape is Simon Willison's
+[Lethal Trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/),
+which Apple cites by name in the WWDC26 session. `ingests` and `effect` are
+that idea turned into two struct fields a compiler can check.
+
 ## How to run it
 
 ```bash
@@ -119,10 +124,12 @@ Honest accounting of what was and was not verified:
   level, not skipped by choice. What was done instead: `Demo.xcodeproj`'s
   `project.pbxproj` was checked for brace and paren balance (32/32, 24/24),
   for dangling object references (22 defined, 22 referenced, 0 dangling), and
-  for a correct `XCLocalSwiftPackageReference` with a relative path; the shared
-  scheme's `BlueprintIdentifier` was confirmed to match the `PBXNativeTarget`
-  id; and the SwiftUI view was compiled and reviewed by hand against its iOS 17
-  availability floor. Treat the Xcode target as reviewed, not as run.
+  for a correct `XCLocalSwiftPackageReference` with a relative path; and the
+  shared scheme's `BlueprintIdentifier` was confirmed to match the
+  `PBXNativeTarget` id. Note that `CapabilityGateDemoView.swift` is excluded
+  from the Linux build by `#if canImport(SwiftUI)`, so it was **not** compiled
+  on this run — it was read line by line against its iOS 17 availability floor.
+  Treat the Xcode target as reviewed, not as run.
 
 ## Layout
 
