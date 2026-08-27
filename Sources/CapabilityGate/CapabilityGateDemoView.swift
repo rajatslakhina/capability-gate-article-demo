@@ -65,7 +65,7 @@ public struct CapabilityGateDemoView: View {
                 Text("Transcript")
             } footer: {
                 Text(gateEnabled
-                     ? "Step \(result.taintedAtStep.map(String.init) ?? "—") read the inbox. Everything that leaves the app is unreachable from there on — including the four calls carrying a valid confirmation."
+                     ? "Step \(result.taintedAtStep.map(String.init) ?? "—") read the inbox. From there on the gate will not hand over an egress-or-worse effect — including to the five calls that carried a valid confirmation."
                      : "Every request reaches its tool, because a prompt is not a call-site check.")
             }
         }
@@ -85,8 +85,8 @@ public struct CapabilityGateDemoView: View {
         }
         .padding(.vertical, 4)
 
-        LabeledContent("Data left the app after taint") {
-            Text(gateEnabled ? "0 of 6 attempts" : "6 of 6 attempts")
+        LabeledContent("Egress-or-worse calls after taint") {
+            Text(gateEnabled ? "0 of 6 got through" : "6 of 6 got through")
                 .foregroundStyle(gateEnabled ? .green : .red)
                 .monospacedDigit()
         }

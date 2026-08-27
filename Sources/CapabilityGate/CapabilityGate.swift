@@ -53,9 +53,12 @@ public struct CapabilityGate: Sendable {
         self.confirmationLifetime = confirmationLifetime
     }
 
-    /// Decide. No `force` parameter exists, which is the point: there is no
-    /// argument the caller — or the model, through the caller — can pass to
-    /// skip a confirmation.
+    /// Decide. There is no `force` parameter: nothing a caller passes lets a
+    /// tainted scope reach an egress-or-worse effect. The confirmation stop is
+    /// deliberately weaker — a token binds approval to one exact effect, but
+    /// minting one is the host app's job, so that stop is only as strong as the
+    /// code that actually shows the sheet. Taint is the part that holds
+    /// regardless of what the caller does.
     public func evaluate(_ request: ToolRequest, in scope: SessionScope, now: Date) -> Decision {
         guard let tool = surface.tool(named: request.toolName) else {
             return .deny(.notInSurface)
